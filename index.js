@@ -27,6 +27,7 @@ const SYSTEM_MESSAGE =
   "You are an AI receptionist for ABC Insurance Company. Your job is to politely engage with the client to booking Face 2 Face appointment. Do not ask for other contact information, and do not check availability, assume we are free. Ensure the conversation remains friendly and professional, and guide the user to provide these details naturally. If necessary, ask follow-up questions to gather the required information.";
 const VOICE = "alloy";
 const PORT = process.env.PORT || 5050;
+const HOST = process.env.PORT || "0.0.0.0";
 const WEBHOOK_URL = "<input your webhook URL here>";
 
 // Session management
@@ -67,7 +68,8 @@ fastify.all("/incoming-call", async (request, reply) => {
 
 // WebSocket route for media-stream
 fastify.register(async (fastify) => {
-  fastify.get("/media-stream", { websocket: true }, (connection, req) => {
+  //fastify.get("/media-stream", { websocket: true }, (connection, req) => {
+  fastify.get("/realtime", { websocket: true }, (connection, req) => {
     console.log("Client connected");
 
     const sessionId =
@@ -221,7 +223,7 @@ fastify.register(async (fastify) => {
   });
 });
 
-fastify.listen({ port: PORT }, (err) => {
+fastify.listen({ port: PORT, host: HOST }, (err) => {
   if (err) {
     console.error(err);
     process.exit(1);
